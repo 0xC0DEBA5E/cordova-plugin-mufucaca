@@ -76,13 +76,7 @@ public class MufuCaCa extends CordovaPlugin {
 
         createPendingIntent();
 
-        if (action.equalsIgnoreCase(REGISTER_MIME_TYPE)) {
-            registerMimeType(data, callbackContext);
-
-        } else if (action.equalsIgnoreCase(REMOVE_MIME_TYPE)) {
-            removeMimeType(data, callbackContext);
-
-        } else if (action.equals(REGISTER_DEFAULT_TAG)) {
+        if (action.equals(REGISTER_DEFAULT_TAG)) {
             registerDefaultTag(callbackContext);
 
         } else if (action.equals(REMOVE_DEFAULT_TAG)) {
@@ -133,29 +127,6 @@ public class MufuCaCa extends CordovaPlugin {
             parseMessage();
         }
         callbackContext.success();
-    }
-
-    private void removeMimeType(JSONArray data, CallbackContext callbackContext) throws JSONException {
-        String mimeType = "";
-        try {
-            mimeType = data.getString(0);
-            /*boolean removed =*/
-            removeIntentFilter(mimeType);
-            callbackContext.success();
-        } catch (MalformedMimeTypeException e) {
-            callbackContext.error("Invalid MIME Type " + mimeType);
-        }
-    }
-
-    private void registerMimeType(JSONArray data, CallbackContext callbackContext) throws JSONException {
-        String mimeType = "";
-        try {
-            mimeType = data.getString(0);
-            intentFilters.add(createIntentFilter(mimeType));
-            callbackContext.success();
-        } catch (MalformedMimeTypeException e) {
-            callbackContext.error("Invalid MIME Type " + mimeType);
-        }
     }
 
     private void showSettings(CallbackContext callbackContext) {
@@ -284,12 +255,6 @@ public class MufuCaCa extends CordovaPlugin {
         return removed;
     }
 
-    private IntentFilter createIntentFilter(String mimeType) throws MalformedMimeTypeException {
-        IntentFilter intentFilter = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        intentFilter.addDataType(mimeType);
-        return intentFilter;
-    }
-
     private PendingIntent getPendingIntent() {
         return pendingIntent;
     }
@@ -318,11 +283,7 @@ public class MufuCaCa extends CordovaPlugin {
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 Parcelable[] messages = intent.getParcelableArrayExtra((NfcAdapter.EXTRA_NDEF_MESSAGES));
 
-                if (action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-                    Ndef ndef = Ndef.get(tag);
-                    fireNdefEvent(NDEF_MIME, ndef, messages);
-
-                } else if (action.equals(NfcAdapter.ACTION_TECH_DISCOVERED)) {
+                if (action.equals(NfcAdapter.ACTION_TECH_DISCOVERED)) {
                     for (String tagTech : tag.getTechList()) {
                         Log.d(TAG, tagTech);
                         //Fire tag event here

@@ -37,11 +37,6 @@ var nfc = {
         cordova.exec(win, fail, "MufuCaCa", "registerTag", []);
     },
 
-    addMimeTypeListener: function (mimeType, callback, win, fail) {
-        document.addEventListener("ndef-mime", callback, false);
-        cordova.exec(win, fail, "MufuCaCa", "registerMimeType", [mimeType]);
-    },
-
     enabled: function (win, fail) {
         cordova.exec(win, fail, "MufuCaCa", "enabled", [[]]);
     },
@@ -49,11 +44,6 @@ var nfc = {
     removeTagDiscoveredListener: function (callback, win, fail) {
         document.removeEventListener("tag", callback, false);
         cordova.exec(win, fail, "MufuCaCa", "removeTag", []);
-    },
-
-    removeMimeTypeListener: function(mimeType, callback, win, fail) {
-        document.removeEventListener("ndef-mime", callback, false);
-        cordova.exec(win, fail, "MufuCaCa", "removeMimeType", [mimeType]);
     },
 
     showSettings: function (win, fail) {
