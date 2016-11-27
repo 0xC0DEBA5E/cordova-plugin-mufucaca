@@ -1,0 +1,27 @@
+{
+  "name": "mufucaca-nfc",
+  "version": "0.0.1",
+  "description": "Near Field Communication (NFC) Plugin for Multifunction-Campus-Cards from Karlsruhes Universities.",
+  "cordova": {
+    "id": "mufucaca-nfc",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xC0DEBA5E/cordova-plugin-mufucaca.git"
+  },
+  "keywords": [
+    "nfc",
+    "ecosystem:cordova",
+    "cordova",
+    "cordova-android"
+  ],
+  "author": "Benjamin Roth <benni.roth91@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0xC0DEBA5E/cordova-plugin-mufucaca.git/issues"
+  },
+  "homepage": "git+https://github.com/0xC0DEBA5E/cordova-plugin-mufucaca.git#readme"
+}
