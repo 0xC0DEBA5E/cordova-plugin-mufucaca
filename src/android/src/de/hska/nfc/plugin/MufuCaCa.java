@@ -26,25 +26,20 @@ import android.nfc.Tag;
 import android.nfc.TagLostException;
 import android.os.Parcelable;
 import android.util.Log;
+import de.hska.nfc.plugin.Wallet.ReadCardResult;
 
-public class MufuCaCa extends CordovaPlugin {
-    private static final String REGISTER_MIME_TYPE = "registerMimeType";
-    private static final String REMOVE_MIME_TYPE = "removeMimeType";
+public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String REGISTER_DEFAULT_TAG = "registerTag";
     private static final String REMOVE_DEFAULT_TAG = "removeTag";
     private static final String ENABLED = "enabled";
     private static final String INIT = "init";
     private static final String SHOW_SETTINGS = "showSettings";
 
-    private static final String NDEF = "ndef";
-    private static final String NDEF_MIME = "ndef-mime";
-    private static final String NDEF_FORMATABLE = "ndef-formatable";
     private static final String TAG_DEFAULT = "tag";
 
     private static final String STATUS_NFC_OK = "NFC_OK";
     private static final String STATUS_NO_NFC = "NO_NFC";
     private static final String STATUS_NFC_DISABLED = "NFC_DISABLED";
-    private static final String STATUS_NDEF_PUSH_DISABLED = "NDEF_PUSH_DISABLED";
 
     private static final String TAG = "MufuCaCa";
     private final List<IntentFilter> intentFilters = new ArrayList<IntentFilter>();
@@ -269,6 +264,7 @@ public class MufuCaCa extends CordovaPlugin {
     }
 
     void parseMessage() {
+        final AsyncResultInterface delegate = this;
         cordova.getThreadPool().execute(new Runnable() {
             @Override
             public void run() {
@@ -281,7 +277,6 @@ public class MufuCaCa extends CordovaPlugin {
                 }
 
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                Parcelable[] messages = intent.getParcelableArrayExtra((NfcAdapter.EXTRA_NDEF_MESSAGES));
 
                 if (action.equals(NfcAdapter.ACTION_TECH_DISCOVERED)) {
                     for (String tagTech : tag.getTechList()) {
@@ -293,6 +288,9 @@ public class MufuCaCa extends CordovaPlugin {
                 if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
                     fireTagEvent(tag);
                 }
+
+                if(tag != null)
+                    (new ReadCardTask(delegate)).execute(new Tag[] { tag });
 
                 setIntent(new Intent());
             }
@@ -360,4 +358,9 @@ public class MufuCaCa extends CordovaPlugin {
             "e.initEvent(''{0}'');\n" +
             "e.tag = {1};\n" +
             "document.dispatchEvent(e);";
+
+    @Override
+    public void onReadFinished(Pair<ReadCardResult, Wallet> data) {
+        Log.d(TAG, "onReadFinished called");
+    }
 }

@@ -30,7 +30,7 @@ function handleNfcFromIntentFilter() {
 document.addEventListener('deviceready', handleNfcFromIntentFilter, false);
 
 // nfc provides javascript wrappers to the native phonegap implementation
-var nfc = {
+var MufuCaCa = {
 
     addTagDiscoveredListener: function (callback, win, fail) {
         document.addEventListener("tag", callback, false);
@@ -199,25 +199,12 @@ var util = {
 
 };
 
-// added since WP8 must call a named function
-// TODO consider switching NFC events from JS events to using the PG callbacks
-function fireNfcTagEvent(eventType, tagAsJson) {
-    setTimeout(function () {
-        var e = document.createEvent('Events');
-        e.initEvent(eventType, true, false);
-        e.tag = JSON.parse(tagAsJson);
-        console.log(e.tag);
-        document.dispatchEvent(e);
-    }, 10);
-}
-
 // create aliases
-nfc.bytesToString = util.bytesToString;
-nfc.stringToBytes = util.stringToBytes;
-nfc.bytesToHexString = util.bytesToHexString;
+MufuCaCa.bytesToString = util.bytesToString;
+MufuCaCa.stringToBytes = util.stringToBytes;
+MufuCaCa.bytesToHexString = util.bytesToHexString;
 
 // kludge some global variables for plugman js-module support
 // eventually these should be replaced and referenced via the module
-window.nfc = nfc;
+window.MufuCaCa = MufuCaCa;
 window.util = util;
-window.fireNfcTagEvent = fireNfcTagEvent;

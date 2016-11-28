@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin
-    xmlns="http://www.phonegap.com/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-mufucaca"
-    version="0.0.1">
+        xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-mufucaca"
+        version="0.0.1">
 
     <name>Cordova MufuCaCa Plugin</name>
 
-    <description>Near Field Communication (NFC) Plugin. Read the Multifunctional Campus Card (MufuCaCa) for Karlsruhes students of KIT, HsKA and PH.
+    <description>Near Field Communication (NFC) Plugin. Read the Multifunctional Campus Card (MufuCaCa) for Karlsruhes
+        students of KIT, HsKA and PH.
     </description>
 
     <license>MIT</license>
@@ -16,20 +17,34 @@
     <issue>https://github.com/chariotsolutions/phonegap-nfc/issues</issue>
 
     <platform name="android">
-        <js-module src="www/mufucaca-nfc.js" name="MUFUCACA">
+        <js-module src="www/mufucaca-nfc.js" name="MufuCaCa">
             <runs/>
         </js-module>
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="MufuCaCaPlugin">
+            <feature name="MufuCaCa">
                 <param name="android-package" value="de.hska.nfc.plugin.MufuCaCa"/>
                 <param name="onload" value="true"/>
             </feature>
         </config-file>
 
+        <source-file src="src/android/src/de/hska/nfc/plugin/CardType.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/MifareMad.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/MifareUtils.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
         <source-file src="src/android/src/de/hska/nfc/plugin/MufuCaCa.java"
                      target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/Pair.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/ReadCardTask.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
         <source-file src="src/android/src/de/hska/nfc/plugin/Util.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/Wallet.java"
+                     target-dir="src/de/hska/nfc/plugin"/>
+        <source-file src="src/android/src/de/hska/nfc/plugin/AsyncResultInterface.java"
                      target-dir="src/de/hska/nfc/plugin"/>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">

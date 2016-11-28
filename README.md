@@ -66,45 +66,6 @@ Removes the previously registered event listener added via `nfc.addTagDiscovered
 - __onSuccess__: (Optional) The callback that is called when the listener is successfully removed.
 - __onFailure__: (Optional) The callback that is called if there was an error during removal.
 
-## nfc.addMimeTypeListener
-
-Registers an event listener for NDEF tags matching a specified MIME type.
-
-    nfc.addMimeTypeListener(mimeType, callback, [onSuccess], [onFailure]);
-
-### Parameters
-
-- __mimeType__: The MIME type to filter for messages.
-- __callback__: The callback that is called when an NDEF tag matching the MIME type is read.
-- __onSuccess__: (Optional) The callback that is called when the listener is added.
-- __onFailure__: (Optional) The callback that is called if there was an error.
-
-### Description
-
-Function `nfc.addMimeTypeListener` registers the callback for ndef-mime events.
-
-A ndef-mime event occurs when a `Ndef.TNF_MIME_MEDIA` tag is read and matches the specified MIME type.
-
-This function can be called multiple times to register different MIME types. You should use the *same* handler for all MIME messages.
-
-    nfc.addMimeTypeListener("text/json", *onNfc*, success, failure);
-    nfc.addMimeTypeListener("text/demo", *onNfc*, success, failure);
-
-On Android, MIME types for filtering should always be lower case. (See [IntentFilter.addDataType()](http://developer.android.com/reference/android/content/IntentFilter.html#addDataType\(java.lang.String\)))
-
-## nfc.removeMimeTypeListener
-
-Removes the previously registered event listener added via `nfc.addMimeTypeListener`.
-
-    nfc.removeMimeTypeListener(mimeType, callback, [onSuccess], [onFailure]);
-
-### Parameters
-
-- __mimeType__: The MIME type to filter for messages.
-- __callback__: The previously registered callback.
-- __onSuccess__: (Optional) The callback that is called when the listener is successfully removed.
-- __onFailure__: (Optional) The callback that is called if there was an error during removal.
-
 ## nfc.enabled
 
 Check if NFC is available and enabled on this device.
