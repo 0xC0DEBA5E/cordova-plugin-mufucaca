@@ -37,6 +37,16 @@ var MufuCaCa = {
         cordova.exec(win, fail, "MufuCaCa", "registerTag", []);
     },
 
+    addReadResultListener: function (callback, win, fail) {
+        document.addEventListener("readResult", callback, false);
+        cordova.exec(win, fail, "MufuCaCa", "addResultListener", []);
+    },
+
+    removeReadResultListener: function (callback, win, fail) {
+        document.removeEventListener("readResult", callback, false);
+        cordova.exec(win, fail, "MufuCaCa", "removeResultListener", []);
+    },
+
     enabled: function (win, fail) {
         cordova.exec(win, fail, "MufuCaCa", "enabled", [[]]);
     },

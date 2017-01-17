@@ -42,6 +42,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
 public class Wallet {
 	enum ReadCardResult {
 		SUCCESS,
@@ -232,5 +235,19 @@ public class Wallet {
 
 	public CardType getCardType() {
 		return cardType;
+	}
+
+	public String toJSONString() {
+		JSONObject data = new JSONObject();
+		try {
+			data.put("cardNumber", cardNumber);
+			data.put("currentBalance", currentBalance);
+			data.put("lastBalance", lastBalance);
+			data.put("cardType", cardType.toString());
+			data.put("cardIssuer", getCardIssuer());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return data.toString();
 	}
 }

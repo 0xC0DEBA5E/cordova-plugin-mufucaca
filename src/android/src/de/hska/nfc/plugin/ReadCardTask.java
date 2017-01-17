@@ -31,10 +31,9 @@ package de.hska.nfc.plugin;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.AsyncTask;
-import android.widget.Toast;
-import de.hska.nfc.plugin.Wallet.ReadCardResult;
-import android.app.Activity;
 import android.util.Log;
+
+import de.hska.nfc.plugin.Wallet.ReadCardResult;
 
 public class ReadCardTask extends AsyncTask<Tag, Integer, Pair<ReadCardResult, Wallet>> {
 
@@ -51,7 +50,7 @@ public class ReadCardTask extends AsyncTask<Tag, Integer, Pair<ReadCardResult, W
             card = MifareClassic.get(tags[0]);
         } catch (NullPointerException e) {
             /* Error while reading card. This problem occurs on HTC devices from the ONE series with Android Lollipop (status of June 2015)
-			 * Try to repair the tag.
+             * Try to repair the tag.
 			 */
             card = MifareClassic.get(MifareUtils.repairTag(tags[0]));
         }
@@ -67,6 +66,7 @@ public class ReadCardTask extends AsyncTask<Tag, Integer, Pair<ReadCardResult, W
     protected void onPostExecute(Pair<ReadCardResult, Wallet> data) {
 
         Log.d("ReadCardTask", "Card successfully read");
-        resultDelegate.onReadFinished(data);
+        if (data.getValue0() == ReadCardResult.SUCCESS)
+            resultDelegate.onReadFinished(data);
     }
 }

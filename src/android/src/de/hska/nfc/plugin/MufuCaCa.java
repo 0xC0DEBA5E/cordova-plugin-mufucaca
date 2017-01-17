@@ -31,6 +31,8 @@ import de.hska.nfc.plugin.Wallet.ReadCardResult;
 public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String REGISTER_DEFAULT_TAG = "registerTag";
     private static final String REMOVE_DEFAULT_TAG = "removeTag";
+    private static final String ADD_RESULT_LISTENER = "addResultListener";
+    private static final String REMOVE_RESULT_LISTENER = "removeResultListener";
     private static final String ENABLED = "enabled";
     private static final String INIT = "init";
     private static final String SHOW_SETTINGS = "showSettings";
@@ -77,6 +79,12 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         } else if (action.equals(REMOVE_DEFAULT_TAG)) {
             removeDefaultTag(callbackContext);
 
+        } else if (action.equals(ADD_RESULT_LISTENER)) {
+            addResultListener(callbackContext);
+
+        } else if (action.equals(REMOVE_RESULT_LISTENER)) {
+            removeResultListener(callbackContext);
+
         } else if (action.equalsIgnoreCase(INIT)) {
             init(callbackContext);
 
@@ -111,6 +119,16 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
 
     private void removeDefaultTag(CallbackContext callbackContext) {
         removeTagFilter();
+        callbackContext.success();
+    }
+
+    private void addResultListener(CallbackContext callbackContext) {
+        //TODO: remember setting
+        callbackContext.success();
+    }
+
+    private void removeResultListener(CallbackContext callbackContext) {
+        //TODO: remember setting
         callbackContext.success();
     }
 
@@ -289,8 +307,8 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
                     fireTagEvent(tag);
                 }
 
-                if(tag != null)
-                    (new ReadCardTask(delegate)).execute(new Tag[] { tag });
+                if (tag != null)
+                    (new ReadCardTask(delegate)).execute(new Tag[]{tag});
 
                 setIntent(new Intent());
             }
@@ -354,13 +372,24 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     }
 
     String javaScriptEventTemplate =
-        "var e = document.createEvent(''Events'');\n" +
-            "e.initEvent(''{0}'');\n" +
-            "e.tag = {1};\n" +
-            "document.dispatchEvent(e);";
+            "var e = document.createEvent(''Events'');\n" +
+                    "e.initEvent(''{0}'');\n" +
+                    "e.tag = {1};\n" +
+                    "document.dispatchEvent(e);";
+
+    String resultEventTemplate =
+            "var e = document.createEvent(''Events'');\n" +
+                    "e.initEvent(''{0}'');\n" +
+                    "e.data = {1};\n" +
+                    "document.dispatchEvent(e);";
 
     @Override
     public void onReadFinished(Pair<ReadCardResult, Wallet> data) {
         Log.d(TAG, "onReadFinished called");
+
+        String wallet = data.getValue1().toJSONString();
+
+        String command = MessageFormat.format(resultEventTemplate, "readResult", wallet);
+        this.webView.sendJavascript(command);
     }
 }
