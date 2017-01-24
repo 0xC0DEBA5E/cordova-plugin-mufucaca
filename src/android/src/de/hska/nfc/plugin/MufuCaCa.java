@@ -1,32 +1,27 @@
 package de.hska.nfc.plugin;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-// using wildcard imports so we can support Cordova 3.x
-import org.apache.cordova.*; // Cordova 3.x
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
-import android.net.Uri;
-import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.nfc.Tag;
-import android.nfc.TagLostException;
-import android.os.Parcelable;
 import android.util.Log;
+
+import org.apache.cordova.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import de.hska.nfc.plugin.Wallet.ReadCardResult;
+
+// using wildcard imports so we can support Cordova 3.x
 
 public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String REGISTER_DEFAULT_TAG = "registerTag";
@@ -377,6 +372,12 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
                     "e.tag = {1};\n" +
                     "document.dispatchEvent(e);";
 
+    String resultErrorsTemplate =
+            "var e = document.createEvent(''Events'');\n" +
+                    "e.initEvent(''{0}'');\n" +
+                    "e.errors = {1};\n" +
+                    "document.dispatchEvent(e);";
+
     String resultEventTemplate =
             "var e = document.createEvent(''Events'');\n" +
                     "e.initEvent(''{0}'');\n" +
@@ -387,9 +388,29 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     public void onReadFinished(Pair<ReadCardResult, Wallet> data) {
         Log.d(TAG, "onReadFinished called");
 
-        String wallet = data.getValue1().toJSONString();
+        String command = "";
+        String errors = "";
+        String wallet = "";
 
-        String command = MessageFormat.format(resultEventTemplate, "readResult", wallet);
+        if (isValidData(data)) {
+            wallet = data.getValue1().toJSONString();
+            command = MessageFormat.format(resultEventTemplate, "readResult", wallet);
+        } else {
+            JSONObject errorObject = new JSONObject();
+            try {
+                errorObject.put("error", "could not read data from card");
+                errors = errorObject.toString();
+                command = MessageFormat.format(resultErrorsTemplate, "readResult", errors);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         this.webView.sendJavascript(command);
+    }
+
+    private boolean isValidData(Pair<ReadCardResult, Wallet> data) {
+        return data != null && data.getValue0() != null && (ReadCardResult.SUCCESS == data.getValue0() || ReadCardResult.OLD_STYLE_WALLET == data.getValue0())
+                && data.getValue1() != null;
     }
 }

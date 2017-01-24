@@ -64,9 +64,7 @@ public class ReadCardTask extends AsyncTask<Tag, Integer, Pair<ReadCardResult, W
     }
 
     protected void onPostExecute(Pair<ReadCardResult, Wallet> data) {
-
-        Log.d("ReadCardTask", "Card successfully read");
-        if (data.getValue0() == ReadCardResult.SUCCESS)
-            resultDelegate.onReadFinished(data);
+        Log.d("ReadCardTask", "Card read finished");
+        resultDelegate.onReadFinished(data);
     }
 }
