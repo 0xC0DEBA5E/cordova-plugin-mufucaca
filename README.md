@@ -88,7 +88,7 @@ License
 
 The MIT License
 
-Copyright (c) 2011-2015 Chariot Solutions
+Copyright (c) 2016-2017 Benjamin Roth
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
