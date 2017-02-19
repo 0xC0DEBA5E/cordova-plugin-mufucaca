@@ -11,9 +11,6 @@ Supported Platforms
 
 * [Installing](#installing)
 * [NFC](#nfc)
-* [Events](#events)
-* [Launching Application when Scanning a Tag](#launching-your-android-application-when-scanning-a-tag)
-* [Testing](#testing)
 * [Sample Projects](#sample-projects)
 * [License](#license)
 
