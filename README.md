@@ -12,7 +12,6 @@ Supported Platforms
 
 * [Installing](#installing)
 * [NFC](#nfc)
-* [Sample Projects](#sample-projects)
 * [License](#license)
 
 # Installing
