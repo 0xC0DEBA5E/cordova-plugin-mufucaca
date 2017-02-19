@@ -2,6 +2,7 @@ Cordova MufuCaCa Plugin
 ==========================
 
 This plugin allows to read the Multifuntional Campus Card from Karlsruhes students from KIT, DH, HsKa and PH. 
+It is derived from [phonegap-nfc](https://github.com/chariotsolutions/phonegap-nfc) because the card is a Mifare 1K-Tag, which is not supported by phonegap-nfc.
 
 Supported Platforms
 -------------------
