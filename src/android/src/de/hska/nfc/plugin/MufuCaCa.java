@@ -148,6 +148,36 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         callbackContext.success();
     }
 
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
+                        NfcAdapter.STATE_OFF);
+                switch (state) {
+                    case NfcAdapter.STATE_OFF:
+                        break;
+                    case NfcAdapter.STATE_TURNING_OFF:
+                        break;
+                    case NfcAdapter.STATE_ON:
+                        break;
+                    case NfcAdapter.STATE_TURNING_ON:
+                        break;
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Remove the broadcast listener
+        this.unregisterReceiver(mReceiver);
+    }
+
     private void createPendingIntent() {
         if (pendingIntent == null) {
             Activity activity = getActivity();
@@ -343,6 +373,8 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         Log.d(TAG, "onResume " + getIntent());
         super.onResume(multitasking);
         startNfc();
+        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        this.registerReceiver(mReceiver, filter);
     }
 
     @Override
