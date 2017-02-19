@@ -1,7 +1,7 @@
 Cordova MufuCaCa Plugin
 ==========================
 
-This plugin allows to read the Multifuntional Campus Card from Karlsruhes students from KIT, HsKa and PH. 
+This plugin allows to read the Multifuntional Campus Card from Karlsruhes students from KIT, DH, HsKa and PH. 
 
 Supported Platforms
 -------------------
@@ -31,8 +31,6 @@ Supported Platforms
 
 - [nfc.addTagDiscoveredListener](#nfcaddtagdiscoveredlistener)
 - [nfc.removeTagDiscoveredListener](#nfcremovetagdiscoveredlistener)
-- [nfc.addMimeTypeListener](#nfcaddmimetypelistener)
-- [nfc.removeMimeTypeListener](#nfcremovemimetypelistener)
 - [nfc.enabled](#nfcenabled)
 - [nfc.showSettings](#nfcshowsettings)
 
