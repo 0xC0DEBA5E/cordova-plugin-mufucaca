@@ -1,4 +1,4 @@
-Cordova MufuCaCa Plugin
+cordova-plugin-mufucaca
 ==========================
 
 This plugin allows to read the Multifuntional Campus Card from Karlsruhes students from KIT, DH, HsKa and PH. 
