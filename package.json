@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-mufucaca",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Near Field Communication (NFC) Plugin for Multifunction-Campus-Cards from Karlsruhes Universities.",
   "cordova": {
     "id": "cordova-plugin-mufucaca",
