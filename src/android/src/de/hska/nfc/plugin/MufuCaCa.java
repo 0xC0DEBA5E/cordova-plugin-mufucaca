@@ -410,7 +410,8 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     }
 
     private boolean isValidData(Pair<ReadCardResult, Wallet> data) {
-        return data != null && data.getValue0() != null && (ReadCardResult.SUCCESS == data.getValue0() || ReadCardResult.OLD_STYLE_WALLET == data.getValue0())
+        return data != null && data.getValue0() != null
+                && (ReadCardResult.SUCCESS == data.getValue0() || ReadCardResult.OLD_STYLE_WALLET == data.getValue0())
                 && data.getValue1() != null;
     }
 }
