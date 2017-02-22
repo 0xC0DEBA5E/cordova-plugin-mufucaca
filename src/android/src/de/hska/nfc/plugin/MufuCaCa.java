@@ -2,6 +2,8 @@ package de.hska.nfc.plugin;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
@@ -28,6 +30,8 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String REMOVE_DEFAULT_TAG = "removeTag";
     private static final String ADD_RESULT_LISTENER = "addResultListener";
     private static final String REMOVE_RESULT_LISTENER = "removeResultListener";
+    private static final String ADD_ADAPTER_STATE_LISTENER = "addAdapterStateListener";
+    private static final String REMOVE_ADAPTER_STATE_LISTENER = "removeAdapterStateListener";
     private static final String ENABLED = "enabled";
     private static final String INIT = "init";
     private static final String SHOW_SETTINGS = "showSettings";
@@ -39,15 +43,13 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String STATUS_NFC_DISABLED = "NFC_DISABLED";
 
     private static final String TAG = "MufuCaCa";
+    public static final String READ_RESULT = "readResult";
     private final List<IntentFilter> intentFilters = new ArrayList<IntentFilter>();
     private final ArrayList<String[]> techLists = new ArrayList<String[]>();
 
     private PendingIntent pendingIntent = null;
 
     private Intent savedIntent = null;
-
-    private CallbackContext shareTagCallback;
-    private CallbackContext handoverCallback;
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
@@ -59,6 +61,10 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         if (action.equalsIgnoreCase(SHOW_SETTINGS)) {
             showSettings(callbackContext);
             return true;
+        } else if (action.equals(ADD_ADAPTER_STATE_LISTENER)) {
+            addAdapterStateListener(callbackContext);
+        } else if (action.equals(REMOVE_ADAPTER_STATE_LISTENER)) {
+            removeAdapterStateListener(callbackContext);
         }
 
         if (!getNfcStatus().equals(STATUS_NFC_OK)) {
@@ -94,6 +100,43 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         }
 
         return true;
+    }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            String stateString = "UNKNOWN";
+            if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
+                        NfcAdapter.STATE_OFF);
+                switch (state) {
+                    case NfcAdapter.STATE_OFF:
+                        stateString = "STATE_OFF";
+                        break;
+                    case NfcAdapter.STATE_TURNING_OFF:
+                        stateString = "STATE_TURNING_OFF";
+                        break;
+                    case NfcAdapter.STATE_ON:
+                        stateString = "STATE_ON";
+                        break;
+                    case NfcAdapter.STATE_TURNING_ON:
+                        stateString = "STATE_TURNING_ON";
+                        break;
+                }
+                fireAdapterChangedEvent(stateString);
+            }
+        }
+    };
+
+    private void addAdapterStateListener(CallbackContext callbackContext) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
+        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        getActivity().registerReceiver(broadcastReceiver, filter);
+    }
+
+    private void removeAdapterStateListener(CallbackContext callbackContext) {
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     private String getNfcStatus() {
@@ -317,6 +360,12 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         this.webView.sendJavascript(command);
     }
 
+    private void fireAdapterChangedEvent(String state) {
+        String command = MessageFormat.format(adapterStateEventTemplate, state);
+        Log.v(TAG, command);
+        this.webView.sendJavascript(command);
+    }
+
     private boolean recycledIntent() { // TODO this is a kludge, find real solution
 
         int flags = getIntent().getFlags();
@@ -383,6 +432,11 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
                     "e.initEvent(''{0}'');\n" +
                     "e.data = {1};\n" +
                     "document.dispatchEvent(e);";
+    String adapterStateEventTemplate =
+            "var e = document.createEvent(''Events'');\n" +
+                    "e.initEvent(''{0}'');\n" +
+                    "e.state = {1};\n" +
+                    "document.dispatchEvent(e);";
 
     @Override
     public void onReadFinished(Pair<ReadCardResult, Wallet> data) {
@@ -394,13 +448,13 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
 
         if (isValidData(data)) {
             wallet = data.getValue1().toJSONString();
-            command = MessageFormat.format(resultEventTemplate, "readResult", wallet);
+            command = MessageFormat.format(resultEventTemplate, READ_RESULT, wallet);
         } else {
             JSONObject errorObject = new JSONObject();
             try {
                 errorObject.put("error", "could not read data from card");
                 errors = errorObject.toString();
-                command = MessageFormat.format(resultErrorsTemplate, "readResult", errors);
+                command = MessageFormat.format(resultErrorsTemplate, READ_RESULT, errors);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

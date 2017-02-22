@@ -47,6 +47,16 @@ var MufuCaCa = {
         cordova.exec(win, fail, "MufuCaCa", "removeResultListener", []);
     },
 
+    addAdapterStateListener: function (callback, win, fail) {
+        document.addEventListener("adapterState", callback, false);
+        cordova.exec(win, fail, "MufuCaCa", "addAdapterStateListener", []);
+    },
+
+    removeAdapterStateListener: function (callback, win, fail) {
+        document.removeEventListener("adapterState", callback, false);
+        cordova.exec(win, fail, "MufuCaCa", "removeAdapterStateListener", []);
+    },
+
     enabled: function (win, fail) {
         cordova.exec(win, fail, "MufuCaCa", "enabled", [[]]);
     },

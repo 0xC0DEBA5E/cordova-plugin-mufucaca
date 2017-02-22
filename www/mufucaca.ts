@@ -27,6 +27,22 @@ export class MufuCaCa {
     public static addReadResultListener(onSuccess?: Function, onFailure?: Function): Observable<any> { return; }
 
     /**
+     * Registers an event listener for the nfc adapter states of the plugin.
+     * (see https://developer.android.com/reference/android/nfc/NfcAdapter.html#EXTRA_ADAPTER_STATE)
+     * @param onSuccess
+     * @param onFailure
+     * @returns {Observable<any>}
+     */
+    @Cordova({
+        observable: true,
+        successIndex: 0,
+        errorIndex: 3,
+        clearFunction: 'removeAdapterStateListener',
+        clearWithArgs: true,
+    })
+    public static addAdapterStateListener(onSuccess?: Function, onFailure?: Function): Observable<any> { return; }
+
+    /**
      * Registers an event listener for tags matching any tag type.
      * @param onSuccess
      * @param onFailure
