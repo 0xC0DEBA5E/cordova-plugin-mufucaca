@@ -32,6 +32,7 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     private static final String REMOVE_RESULT_LISTENER = "removeResultListener";
     private static final String ADD_ADAPTER_STATE_LISTENER = "addAdapterStateListener";
     private static final String REMOVE_ADAPTER_STATE_LISTENER = "removeAdapterStateListener";
+    private static final String ADAPTER_STATE = "adapterState";
     private static final String ENABLED = "enabled";
     private static final String INIT = "init";
     private static final String SHOW_SETTINGS = "showSettings";
@@ -361,7 +362,7 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     }
 
     private void fireAdapterChangedEvent(String state) {
-        String command = MessageFormat.format(adapterStateEventTemplate, state);
+        String command = MessageFormat.format(adapterStateEventTemplate, ADAPTER_STATE, state);
         Log.v(TAG, command);
         this.webView.sendJavascript(command);
     }
