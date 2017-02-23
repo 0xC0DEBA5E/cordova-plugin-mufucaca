@@ -436,7 +436,7 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     String adapterStateEventTemplate =
             "var e = document.createEvent(''Events'');\n" +
                     "e.initEvent(''{0}'');\n" +
-                    "e.state = {1};\n" +
+                    "e.state = \"{1}\";\n" +
                     "document.dispatchEvent(e);";
 
     @Override
