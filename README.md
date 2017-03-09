@@ -40,7 +40,7 @@ If you plan to use TypeScript, there is a TypeScript-wrapper for this project at
 - [MufuCaCa.removeTagDiscoveredListener](#mufucacaremovetagdiscoveredlistener)
 - [MufuCaCa.addReadResultListener](#mufucacaaddreadresultlistener)
 - [MufuCaCa.removeReadResultListener](#mufucacaremovereadresultlistener)
-- [MufuCaCa.addAdapterStateListenerListener](#mufucacaaddadapterstatelistener)
+- [MufuCaCa.addAdapterStateListener](#mufucacaaddadapterstatelistener)
 - [MufuCaCa.removeAdapterStateListener](#mufucacaremoveadapterstatelistener)
 - [MufuCaCa.enabled](#mufucacaenabled)
 - [MufuCaCa.showSettings](#mufucacashowsettings)
