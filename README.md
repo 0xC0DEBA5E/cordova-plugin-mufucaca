@@ -11,31 +11,35 @@ Supported Platforms
 ## Contents
 
 * [Installing](#installing)
-* [NFC](#nfc)
+* [MufuCaCa](#MufuCaCa)
 * [License](#license)
 
 # Installing
 
 ### Cordova
+To install via NPM, use:
 
-    $ cordova plugin add https://github.com/0xC0DEBA5E/cordova-plugin-mufucaca.git
+    $ cordova plugin add cordova-plugin-mufucaca
+    
+# TypeScript
+If you plan to use TypeScript, there is a TypeScript-wrapper for this project at: [mufucaca-typescript](https://github.com/0xC0DEBA5E/mufucaca-typescript).
 
-# NFC
+# MufuCaCa
 
-> The nfc object provides access to the device's NFC sensor.
+> The MufuCaCa class provides access to the function of the plugin.
 
 ## Methods
 
-- [nfc.addTagDiscoveredListener](#nfcaddtagdiscoveredlistener)
-- [nfc.removeTagDiscoveredListener](#nfcremovetagdiscoveredlistener)
-- [nfc.enabled](#nfcenabled)
-- [nfc.showSettings](#nfcshowsettings)
+- [MufuCaCa.addTagDiscoveredListener](#MufuCaCaaddtagdiscoveredlistener)
+- [MufuCaCa.removeTagDiscoveredListener](#MufuCaCaremovetagdiscoveredlistener)
+- [MufuCaCa.enabled](#MufuCaCaenabled)
+- [MufuCaCa.showSettings](#MufuCaCashowsettings)
 
-## nfc.addTagDiscoveredListener
+## MufuCaCa.addTagDiscoveredListener
 
 Registers an event listener for tags matching any tag type.
 
-    nfc.addTagDiscoveredListener(callback, [onSuccess], [onFailure]);
+    MufuCaCa.addTagDiscoveredListener(callback, [onSuccess], [onFailure]);
 
 ### Parameters
 
@@ -45,11 +49,11 @@ Registers an event listener for tags matching any tag type.
 
 ### Description
 
-Function `nfc.addTagDiscoveredListener` registers the callback for tag events.
+Function `MufuCaCa.addTagDiscoveredListener` registers the callback for tag events.
 
 This event occurs when any tag is detected by the phone.
 
-## nfc.removeTagDiscoveredListener
+## MufuCaCa.removeTagDiscoveredListener
 
 Removes the previously registered event listener added via `nfc.addTagDiscoveredListener`.
 
@@ -61,20 +65,23 @@ Removes the previously registered event listener added via `nfc.addTagDiscovered
 - __onSuccess__: (Optional) The callback that is called when the listener is successfully removed.
 - __onFailure__: (Optional) The callback that is called if there was an error during removal.
 
-## nfc.enabled
+## MufuCaCa.enabled
 
 Check if NFC is available and enabled on this device.
 
-nfc.enabled(onSuccess, onFailure);
+MufuCaCa.enabled(onSuccess, onFailure);
 
 ### Parameters
 
 - __onSuccess__: The callback that is called when NFC is enabled.
 - __onFailure__: The callback that is called when NFC is disabled or missing.
 
+### Credits 
+This project combines code from different other projects. Special thanks go to [phonegap-nfc](https://github.com/chariotsolutions/phonegap-nfc) and [kitcard-reader](https://github.com/pkern/kitcard-reader).
+
 ### Description
 
-Function `nfc.enabled` explicitly checks to see if the phone has NFC and if NFC is enabled. If
+Function `MufuCaCa.enabled` explicitly checks to see if the phone has NFC and if NFC is enabled. If
 everything is OK, the success callback is called. If there is a problem, the failure callback
 will be called with a reason code.
 
