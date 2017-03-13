@@ -320,7 +320,7 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
         return techLists.toArray(new String[0][0]);
     }
 
-    void parseMessage() {
+    private void parseMessage() {
         final AsyncResultInterface delegate = this;
         cordova.getThreadPool().execute(new Runnable() {
             @Override
@@ -355,7 +355,6 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     }
 
     private void fireTagEvent(Tag tag) {
-
         String command = MessageFormat.format(javaScriptEventTemplate, TAG_DEFAULT, Util.tagToJSON(tag));
         Log.v(TAG, command);
         this.webView.sendJavascript(command);
@@ -368,7 +367,6 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
     }
 
     private boolean recycledIntent() { // TODO this is a kludge, find real solution
-
         int flags = getIntent().getFlags();
         if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) {
             Log.i(TAG, "Launched from history, killing recycled intent");
@@ -466,7 +464,7 @@ public class MufuCaCa extends CordovaPlugin implements AsyncResultInterface {
 
     private boolean isValidData(Pair<ReadCardResult, Wallet> data) {
         return data != null && data.getValue0() != null
-                && (ReadCardResult.SUCCESS == data.getValue0() || ReadCardResult.OLD_STYLE_WALLET == data.getValue0())
+                && (ReadCardResult.SUCCESS == data.getValue0()/* || ReadCardResult.OLD_STYLE_WALLET == data.getValue0()*/)
                 && data.getValue1() != null;
     }
 }
