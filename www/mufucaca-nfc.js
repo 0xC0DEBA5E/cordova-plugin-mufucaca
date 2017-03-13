@@ -210,9 +210,9 @@ var util = {
             if (typeof(type) === 'string') {
                 recordType = type;
             } else {
-                recordType = nfc.bytesToString(type);
+                recordType = MufuCaCa.bytesToString(type);
             }
-            return (nfc.bytesToString(record.type) === recordType);
+            return (MufuCaCa.bytesToString(record.type) === recordType);
         }
         return false;
     }
